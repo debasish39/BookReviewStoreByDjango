@@ -1,0 +1,117 @@
+{% extends "app/base.html" %}
+
+{% block title %}Book List{% endblock %}
+
+{% block content %}
+<style>
+  /* Card Shadow and Hover Lift */
+  .custom-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .custom-shadow:hover {
+    transform: translateY(-5px);
+  }
+
+  /* Card height constraints */
+  .fixed-card {
+    height: 100%;
+    max-height: 600px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Image Zoom Effect on Hover */
+  .card-img-top {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    border-radius:30px;
+  }
+
+  .image-container:hover .card-img-top {
+    transform: scale(9.9);
+  }
+
+  /* Scrollable Content Area */
+  .scrollable-content {
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+
+  .scrollable-content::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollable-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  .image-container .card-img-top:hover {
+  transform: scale(0.9);
+}
+/* Scrollable Content Area */
+.scrollable-content {
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.scrollable-content::-webkit-scrollbar {
+  width: 3px;
+  height:30px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background-color: #ffc107; /* Yellow scrollbar */
+  border-radius: 4px;
+}
+
+</style>
+
+<div class="container mt-3">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for book in books %}
+      <div class="col">
+        <div class="card p-3 mb-5 bg-white rounded custom-shadow fixed-card">
+          
+        <!-- Image with zoom effect on hover -->
+<div class="image-container">
+  <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+</div>
+
+
+          <!-- Card Body -->
+          <div class="card-body d-flex flex-column">
+            <!-- Scrollable Section -->
+            <div class="scrollable-content mb-3">
+              <h3 class="card-title text-center">{{ book.title }}</h3>
+              <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
+              <p class="card-text"><strong>Published:</strong> {{ book.publication_date }}</p>
+              <p class="card-text"><strong>Created:</strong> {{ book.created_at }}</p>
+              <p class="card-text"><strong>Updated:</strong> {{ book.updated_at }}</p>
+              <p class="card-text"><strong>Description:</strong> {{ book.description }}</p>
+            </div>
+
+            <!-- Button at Bottom -->
+            <div class="d-flex justify-content-center mt-auto">
+              <a href="{% url 'book-detail' book.pk %}" class="btn btn-outline-warning">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 text-center mt-5">
+        <h2>No books available</h2>
+        <p>Please add some books to the list.</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}
